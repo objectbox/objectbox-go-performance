@@ -17,9 +17,9 @@
 package main
 
 import (
-	"flag"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/objectbox/go-benchmarks/internal/cmd"
 	"github.com/objectbox/go-benchmarks/internal/models"
 	"github.com/objectbox/go-benchmarks/internal/perf"
 	"os"
@@ -27,23 +27,16 @@ import (
 )
 
 func main() {
-	var dbPath = flag.String("db", perf.OptionsDefaults.Path, "database directory")
-	var count = flag.Int("count", perf.OptionsDefaults.Count, "number of objects")
-	var runs = flag.Int("runs", perf.OptionsDefaults.Runs, "number of times the tests should be executed")
-	flag.Parse()
+	var options = cmd.GetOptions()
 
 	var executable = &GormPerf{
-		path: *dbPath,
+		path: options.Path,
 	}
 
 	var executor = perf.CreateExecutor(executable)
 	defer executor.Close()
 
-	executor.Run(perf.Options{
-		Count:    *count,
-		Runs:     *runs,
-		ManualGc: perf.OptionsDefaults.ManualGc,
-	})
+	executor.Run(options)
 }
 
 // perf executable
