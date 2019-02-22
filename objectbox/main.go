@@ -67,6 +67,11 @@ func (exec *ObjectBoxPerf) Init() error {
 
 func (exec *ObjectBoxPerf) Close() error {
 	exec.ob.Close()
+
+	if err := os.RemoveAll(exec.path); err != nil {
+		return err
+	}
+
 	return nil
 }
 
