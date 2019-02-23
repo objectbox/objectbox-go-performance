@@ -22,8 +22,9 @@ type Executable interface {
 	Init() error
 	Close() error
 	RemoveAll() error
+	RemoveBulk(items []*models.Entity) error
 	PutAsync(*models.Entity) error
 	AwaitAsyncCompletion() error
-	PutAll(items []*models.Entity) error
+	PutBulk(items []*models.Entity) error
 	ReadAll() ([]*models.Entity, error)
 }

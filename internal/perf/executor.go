@@ -57,6 +57,12 @@ func (perf *Executor) Close() {
 	assert(perf.exec.Close())
 }
 
+func removeIds(items []*models.Entity) {
+	for _, item := range items {
+		item.Id = 0
+	}
+}
+
 func (perf *Executor) Run(options Options) {
 	log.Printf("running the test %d times with %d objects", options.Runs, options.Count)
 
@@ -66,13 +72,18 @@ func (perf *Executor) Run(options Options) {
 		debug.SetGCPercent(-1)
 	}
 
-	inserts := perf.PrepareData(options.Count)
+	var inserts = perf.PrepareData(options.Count)
 
 	for i := 0; i < options.Runs; i++ {
-		perf.PutAll(inserts)
+		perf.PutBulk(inserts)
 		items := perf.ReadAll(options.Count)
-		perf.UpdateAll(items)
+		perf.UpdateBulk(items)
 		perf.RemoveAll()
+
+		// insert again and delete by id
+		removeIds(inserts)
+		perf.PutBulk(inserts)
+		perf.RemoveBulk(inserts)
 
 		log.Printf("%d/%d finished", i+1, options.Runs)
 
@@ -84,10 +95,12 @@ func (perf *Executor) Run(options Options) {
 	}
 
 	perf.PrintTimes([]string{
-		"PutAll",
+		"Init",
+		"PutBulk",
 		"ReadAll",
-		"UpdateAll",
+		"UpdateBulk",
 		"RemoveAll",
+		"RemoveBulk",
 	})
 }
 
@@ -97,6 +110,11 @@ func (perf *Executor) RemoveAll() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (perf *Executor) RemoveBulk(items []*models.Entity) {
+	defer perf.trackTime(time.Now())
+	assert(perf.exec.RemoveBulk(items))
 }
 
 func (perf *Executor) PrepareData(count int) []*models.Entity {
@@ -125,9 +143,9 @@ func (perf *Executor) PutAsync(items []*models.Entity) {
 	assert(perf.exec.AwaitAsyncCompletion())
 }
 
-func (perf *Executor) PutAll(items []*models.Entity) {
+func (perf *Executor) PutBulk(items []*models.Entity) {
 	defer perf.trackTime(time.Now())
-	assert(perf.exec.PutAll(items))
+	assert(perf.exec.PutBulk(items))
 }
 
 func (perf *Executor) ReadAll(expectedCount int) []*models.Entity {
@@ -151,9 +169,9 @@ func (perf *Executor) ChangeValues(items []*models.Entity) {
 	}
 }
 
-func (perf *Executor) UpdateAll(items []*models.Entity) {
+func (perf *Executor) UpdateBulk(items []*models.Entity) {
 	defer perf.trackTime(time.Now())
-	assert(perf.exec.PutAll(items))
+	assert(perf.exec.PutBulk(items))
 }
 
 func (perf *Executor) trackTime(start time.Time) {

@@ -79,6 +79,10 @@ func (exec *ObjectBoxPerf) RemoveAll() error {
 	return exec.box.RemoveAll()
 }
 
+func (exec *ObjectBoxPerf) RemoveBulk(items []*models.Entity) error {
+	return exec.box.Remove(items...)
+}
+
 func (exec *ObjectBoxPerf) PutAsync(item *models.Entity) error {
 	_, err := exec.box.PutAsync(item)
 	return err
@@ -89,7 +93,7 @@ func (exec *ObjectBoxPerf) AwaitAsyncCompletion() error {
 	return nil
 }
 
-func (exec *ObjectBoxPerf) PutAll(items []*models.Entity) error {
+func (exec *ObjectBoxPerf) PutBulk(items []*models.Entity) error {
 	_, err := exec.box.PutAll(items)
 	return err
 }

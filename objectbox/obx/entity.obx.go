@@ -214,8 +214,16 @@ func (box *EntityBox) GetAll() ([]*Entity, error) {
 }
 
 // Remove deletes a single object
-func (box *EntityBox) Remove(object *Entity) (err error) {
-	return box.Box.Remove(object.Id)
+func (box *EntityBox) Remove(objects ...*Entity) (err error) {
+	if len(objects) == 1 {
+		return box.Box.Remove(objects[0].Id)
+	} else {
+		var ids = make([]uint64, len(objects))
+		for i, object := range objects {
+			ids[i] = object.Id
+		}
+		return box.Box.Remove(ids...)
+	}
 }
 
 // Creates a query with the given conditions. Use the fields of the Entity_ struct to create conditions.

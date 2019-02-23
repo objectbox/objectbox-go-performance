@@ -17,7 +17,7 @@
 package models
 
 type Entity struct {
-	Id      uint64 `sql:"type:bigint PRIMARY KEY"`
+	Id      uint64 `gorm:"primary_key"`
 	Int32   int32
 	Int64   int64
 	String  string
