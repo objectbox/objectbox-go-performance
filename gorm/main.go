@@ -86,7 +86,7 @@ func (exec *GormPerf) RemoveAll() error {
 func (exec *GormPerf) PutAsync(item *models.Entity) error {
 	// PutAsync is simulated by reusing a transaction and committing it afterwards
 	if exec.tx == nil {
-		exec.tx = exec.db.Begin()
+		exec.tx = exec.db.Begin().Model(&models.Entity{})
 	}
 
 	if item.Id == 0 {
@@ -117,7 +117,7 @@ func (exec *GormPerf) AwaitAsyncCompletion() error {
 func (exec *GormPerf) PutAll(items []*models.Entity) (err error) {
 	// until the bulk insert feature request from Oct 16, 2014 https://github.com/jinzhu/gorm/issues/255
 	// is implemented, we're using manual transactions, see http://gorm.io/docs/transactions.html
-	tx := exec.db.Begin()
+	tx := exec.db.Begin().Model(&models.Entity{})
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
