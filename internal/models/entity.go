@@ -17,7 +17,7 @@
 package models
 
 type Entity struct {
-	Id      uint64 `gorm:"primary_key"`
+	Id      uint64 `gorm:"primary_key" storm:"id,increment"`
 	Int32   int32
 	Int64   int64
 	String  string
