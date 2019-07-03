@@ -13,7 +13,7 @@ func ObjectBoxModel() *objectbox.Model {
 	model.GeneratorVersion(2)
 
 	model.RegisterBinding(EntityBinding)
-	model.LastEntityId(1, 1737161401460991620)
+	model.LastEntityId(1, 4175473993322934045)
 
 	return model
 }

@@ -1,11 +1,13 @@
 module github.com/objectbox/go-benchmarks
 
+go 1.12
+
 require (
-	github.com/google/flatbuffers v1.10.0
-	github.com/jinzhu/gorm v1.9.2
-	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
-	github.com/mattn/go-sqlite3 v1.10.0 // indirect
-	github.com/objectbox/objectbox-go v0.9.0
+	cloud.google.com/go v0.41.0 // indirect
+	github.com/google/flatbuffers v1.11.0
+	github.com/jinzhu/gorm v1.9.10
+	github.com/objectbox/objectbox-go v1.0.0
+	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4 // indirect
 )
 
-replace github.com/objectbox/objectbox-go v0.9.0 => ../objectbox-go
+replace github.com/objectbox/objectbox-go v1.0.0 => ../objectbox-go

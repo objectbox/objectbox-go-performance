@@ -19,7 +19,7 @@ var EntityBinding = entity_EntityInfo{
 	Entity: objectbox.Entity{
 		Id: 1,
 	},
-	Uid: 1737161401460991620,
+	Uid: 4175473993322934045,
 }
 
 // Entity_ contains type-based Property helpers to facilitate some common operations such as Queries.
@@ -69,14 +69,14 @@ func (entity_EntityInfo) GeneratorVersion() int {
 
 // AddToModel is called by ObjectBox during model build
 func (entity_EntityInfo) AddToModel(model *objectbox.Model) {
-	model.Entity("Entity", 1, 1737161401460991620)
-	model.Property("Id", objectbox.PropertyType_Long, 1, 7373286741377356014)
-	model.PropertyFlags(objectbox.PropertyFlags_UNSIGNED | objectbox.PropertyFlags_ID)
-	model.Property("Int32", objectbox.PropertyType_Int, 2, 4837914178321008766)
-	model.Property("Int64", objectbox.PropertyType_Long, 3, 3841825182616422591)
-	model.Property("String", objectbox.PropertyType_String, 4, 6473251296493454829)
-	model.Property("Float64", objectbox.PropertyType_Double, 5, 8933082277725371577)
-	model.EntityLastPropertyId(5, 8933082277725371577)
+	model.Entity("Entity", 1, 4175473993322934045)
+	model.Property("Id", 6, 1, 8095026970754116821)
+	model.PropertyFlags(8193)
+	model.Property("Int32", 5, 2, 2862911194447920904)
+	model.Property("Int64", 6, 3, 3057392904231195228)
+	model.Property("String", 9, 4, 5438520838581246393)
+	model.Property("Float64", 8, 5, 4760226983744839400)
+	model.EntityLastPropertyId(5, 4760226983744839400)
 }
 
 // GetId is called by ObjectBox during Put operations to check for existing ID on an object
@@ -90,7 +90,7 @@ func (entity_EntityInfo) SetId(object interface{}, id uint64) {
 }
 
 // PutRelated is called by ObjectBox to put related entities before the object itself is flattened and put
-func (entity_EntityInfo) PutRelated(txn *objectbox.Transaction, object interface{}, id uint64) error {
+func (entity_EntityInfo) PutRelated(ob *objectbox.ObjectBox, object interface{}, id uint64) error {
 	return nil
 }
 
@@ -110,7 +110,7 @@ func (entity_EntityInfo) Flatten(object interface{}, fbb *flatbuffers.Builder, i
 }
 
 // Load is called by ObjectBox to load an object from a FlatBuffer
-func (entity_EntityInfo) Load(txn *objectbox.Transaction, bytes []byte) (interface{}, error) {
+func (entity_EntityInfo) Load(ob *objectbox.ObjectBox, bytes []byte) (interface{}, error) {
 	var table = &flatbuffers.Table{
 		Bytes: bytes,
 		Pos:   flatbuffers.GetUOffsetT(bytes),
@@ -119,10 +119,10 @@ func (entity_EntityInfo) Load(txn *objectbox.Transaction, bytes []byte) (interfa
 
 	return &Entity{
 		Id:      id,
-		Int32:   table.GetInt32Slot(6, 0),
-		Int64:   table.GetInt64Slot(8, 0),
+		Int32:   fbutils.GetInt32Slot(table, 6),
+		Int64:   fbutils.GetInt64Slot(table, 8),
 		String:  fbutils.GetStringSlot(table, 10),
-		Float64: table.GetFloat64Slot(12, 0),
+		Float64: fbutils.GetFloat64Slot(table, 12),
 	}, nil
 }
 
@@ -177,7 +177,7 @@ func (box *EntityBox) PutAsync(object *Entity) (uint64, error) {
 	return box.Box.PutAsync(object)
 }
 
-// PutAll inserts multiple objects in single transaction.
+// PutMany inserts multiple objects in single transaction.
 // In case Ids are not set on the objects, they would be assigned automatically (auto-increment).
 //
 // Returns: IDs of the put objects (in the same order).
@@ -187,8 +187,8 @@ func (box *EntityBox) PutAsync(object *Entity) (uint64, error) {
 // even though the transaction has been rolled back and the objects are not stored under those IDs.
 //
 // Note: The slice may be empty or even nil; in both cases, an empty IDs slice and no error is returned.
-func (box *EntityBox) PutAll(objects []*Entity) ([]uint64, error) {
-	return box.Box.PutAll(objects)
+func (box *EntityBox) PutMany(objects []*Entity) ([]uint64, error) {
+	return box.Box.PutMany(objects)
 }
 
 // Get reads a single object.
@@ -204,7 +204,17 @@ func (box *EntityBox) Get(id uint64) (*Entity, error) {
 	return object.(*Entity), nil
 }
 
-// Get reads all stored objects
+// GetMany reads multiple objects at once.
+// If any of the objects doesn't exist, its position in the return slice is nil
+func (box *EntityBox) GetMany(ids ...uint64) ([]*Entity, error) {
+	objects, err := box.Box.GetMany(ids...)
+	if err != nil {
+		return nil, err
+	}
+	return objects.([]*Entity), nil
+}
+
+// GetAll reads all stored objects
 func (box *EntityBox) GetAll() ([]*Entity, error) {
 	objects, err := box.Box.GetAll()
 	if err != nil {
@@ -214,16 +224,21 @@ func (box *EntityBox) GetAll() ([]*Entity, error) {
 }
 
 // Remove deletes a single object
-func (box *EntityBox) Remove(objects ...*Entity) (err error) {
-	if len(objects) == 1 {
-		return box.Box.Remove(objects[0].Id)
-	} else {
-		var ids = make([]uint64, len(objects))
-		for i, object := range objects {
-			ids[i] = object.Id
-		}
-		return box.Box.Remove(ids...)
+func (box *EntityBox) Remove(object *Entity) error {
+	return box.Box.Remove(object.Id)
+}
+
+// RemoveMany deletes multiple objects at once.
+// Returns the number of deleted object or error on failure.
+// Note that this method will not fail if an object is not found (e.g. already removed).
+// In case you need to strictly check whether all of the objects exist before removing them,
+// you can execute multiple box.Contains() and box.Remove() inside a single write transaction.
+func (box *EntityBox) RemoveMany(objects ...*Entity) (uint64, error) {
+	var ids = make([]uint64, len(objects))
+	for k, object := range objects {
+		ids[k] = object.Id
 	}
+	return box.Box.RemoveMany(ids...)
 }
 
 // Creates a query with the given conditions. Use the fields of the Entity_ struct to create conditions.

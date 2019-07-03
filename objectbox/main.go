@@ -17,6 +17,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/objectbox/go-benchmarks/internal/cmd"
 	"github.com/objectbox/go-benchmarks/internal/models"
 	"github.com/objectbox/go-benchmarks/internal/perf"
@@ -52,8 +53,7 @@ func (exec *ObjectBoxPerf) Init() error {
 
 	var builder = objectbox.NewBuilder().
 		Directory(exec.path).
-		Model(obx.ObjectBoxModel()).
-		AlwaysAwaitAsync(false)
+		Model(obx.ObjectBoxModel())
 
 	if ob, err := builder.Build(); err != nil {
 		return err
@@ -80,7 +80,12 @@ func (exec *ObjectBoxPerf) RemoveAll() error {
 }
 
 func (exec *ObjectBoxPerf) RemoveBulk(items []*models.Entity) error {
-	return exec.box.Remove(items...)
+	if count, err := exec.box.RemoveMany(items...); err != nil {
+		return err
+	} else if count != uint64(len(items)) {
+		return fmt.Errorf("removed only %d out of %d objects", count, len(items))
+	}
+	return nil
 }
 
 func (exec *ObjectBoxPerf) PutAsync(item *models.Entity) error {
@@ -94,7 +99,7 @@ func (exec *ObjectBoxPerf) AwaitAsyncCompletion() error {
 }
 
 func (exec *ObjectBoxPerf) PutBulk(items []*models.Entity) error {
-	_, err := exec.box.PutAll(items)
+	_, err := exec.box.PutMany(items)
 	return err
 }
 
