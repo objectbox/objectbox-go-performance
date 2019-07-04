@@ -84,6 +84,14 @@ func (exec *StormPerf) Close() error {
 	return nil
 }
 
+func (exec *StormPerf) Size() (uint64, error) {
+	if stat, err := os.Stat(filepath.Join(exec.path, "test.db")); err != nil {
+		return 0, err
+	} else {
+		return uint64(stat.Size()), nil
+	}
+}
+
 func (exec *StormPerf) RemoveAll() error {
 	return exec.db.Select().Delete(&models.Entity{})
 }

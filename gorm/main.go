@@ -80,6 +80,14 @@ func (exec *GormPerf) Close() error {
 	return nil
 }
 
+func (exec *GormPerf) Size() (uint64, error) {
+	if stat, err := os.Stat(filepath.Join(exec.path, "test.db")); err != nil {
+		return 0, err
+	} else {
+		return uint64(stat.Size()), nil
+	}
+}
+
 func (exec *GormPerf) RemoveAll() error {
 	return exec.db.Delete(models.Entity{}).Error
 }

@@ -24,6 +24,7 @@ import (
 	"github.com/objectbox/go-benchmarks/objectbox/obx"
 	"github.com/objectbox/objectbox-go/objectbox"
 	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -73,6 +74,14 @@ func (exec *ObjectBoxPerf) Close() error {
 	}
 
 	return nil
+}
+
+func (exec *ObjectBoxPerf) Size() (uint64, error) {
+	if stat, err := os.Stat(filepath.Join(exec.path, "data.mdb")); err != nil {
+		return 0, err
+	} else {
+		return uint64(stat.Size()), nil
+	}
 }
 
 func (exec *ObjectBoxPerf) RemoveAll() error {

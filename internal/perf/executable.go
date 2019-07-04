@@ -21,6 +21,7 @@ import "github.com/objectbox/go-benchmarks/internal/models"
 type Executable interface {
 	Init() error
 	Close() error
+	Size() (uint64, error)
 	RemoveAll() error
 	RemoveBulk(items []*models.Entity) error
 	PutAsync(*models.Entity) error

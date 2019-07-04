@@ -73,11 +73,17 @@ func (perf *Executor) Run(options Options) {
 	}
 
 	var inserts = perf.PrepareData(options.Count)
+	var size uint64
 
 	for i := 0; i < options.Runs; i++ {
 		perf.PutBulk(inserts)
 		items := perf.ReadAll(options.Count)
 		perf.UpdateBulk(items)
+		if size_, err := perf.exec.Size(); err != nil {
+			panic(err)
+		} else {
+			size = size_
+		}
 		perf.RemoveAll()
 
 		// insert again and delete by id
@@ -102,6 +108,8 @@ func (perf *Executor) Run(options Options) {
 		"RemoveAll",
 		"RemoveBulk",
 	})
+
+	fmt.Println(fmt.Sprintf("DB size after update, before remove: %d", size))
 }
 
 func (perf *Executor) RemoveAll() {
