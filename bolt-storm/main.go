@@ -18,7 +18,6 @@ package main
 
 import (
 	"github.com/asdine/storm"
-	"github.com/asdine/storm/q"
 	"github.com/objectbox/go-benchmarks/internal/cmd"
 	"github.com/objectbox/go-benchmarks/internal/models"
 	"github.com/objectbox/go-benchmarks/internal/perf"
@@ -90,12 +89,21 @@ func (exec *StormPerf) RemoveAll() error {
 }
 
 func (exec *StormPerf) RemoveBulk(items []*models.Entity) error {
-	var ids = make([]uint64, len(items))
-	for k, object := range items {
-		ids[k] = object.Id
-	}
+	// Using queries - it's slower than TX and iterating, as implemented bellow
+	//var ids = make([]uint64, len(items))
+	//for k, object := range items {
+	//	ids[k] = object.Id
+	//}
+	//return exec.db.Select(q.In("Id", ids)).Delete(&models.Entity{})
 
-	return exec.db.Select(q.In("Id", ids)).Delete(&models.Entity{})
+	return exec.runInTx(func(tx storm.Node) error {
+		for _, object := range items {
+			if err := tx.DeleteStruct(object); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }
 
 func (exec *StormPerf) PutAsync(item *models.Entity) error {
