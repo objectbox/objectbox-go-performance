@@ -202,3 +202,16 @@ func (exec *GormPerf) ReadAll() ([]*models.Entity, error) {
 	exec.db.Find(&items)
 	return items, exec.db.Error
 }
+
+func (exec *GormPerf) QueryIdBetween(min, max uint64) ([]*models.Entity, error) {
+	var items []*models.Entity
+	exec.db.Where("Id BETWEEN ? AND ?", min, max).Find(&items)
+	return items, exec.db.Error
+}
+
+func (exec *GormPerf) QueryStringPrefix(prefix string) ([]*models.Entity, error) {
+	var items []*models.Entity
+	// NOTE this doesn't work correctly if `prefix` contains "%"
+	exec.db.Where("String LIKE ?", prefix+"%").Find(&items)
+	return items, exec.db.Error
+}

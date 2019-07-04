@@ -115,3 +115,11 @@ func (exec *ObjectBoxPerf) PutBulk(items []*models.Entity) error {
 func (exec *ObjectBoxPerf) ReadAll() ([]*models.Entity, error) {
 	return exec.box.GetAll()
 }
+
+func (exec *ObjectBoxPerf) QueryIdBetween(min, max uint64) ([]*models.Entity, error) {
+	return exec.box.Query(obx.Entity_.Id.Between(min, max)).Find()
+}
+
+func (exec *ObjectBoxPerf) QueryStringPrefix(prefix string) ([]*models.Entity, error) {
+	return exec.box.Query(obx.Entity_.String.HasPrefix(prefix, true)).Find()
+}

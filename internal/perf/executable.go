@@ -28,4 +28,6 @@ type Executable interface {
 	AwaitAsyncCompletion() error
 	PutBulk(items []*models.Entity) error
 	ReadAll() ([]*models.Entity, error)
+	QueryIdBetween(min, max uint64) ([]*models.Entity, error)
+	QueryStringPrefix(prefix string) ([]*models.Entity, error)
 }

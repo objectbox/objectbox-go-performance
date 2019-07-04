@@ -23,6 +23,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"runtime/debug"
+	"strings"
 	"time"
 )
 
@@ -79,11 +80,27 @@ func (perf *Executor) Run(options Options) {
 		perf.PutBulk(inserts)
 		items := perf.ReadAll(options.Count)
 		perf.UpdateBulk(items)
+
 		if size_, err := perf.exec.Size(); err != nil {
 			panic(err)
 		} else {
 			size = size_
 		}
+
+		if len(items) >= 100 {
+			perf.Query100IdsBetween(items[len(items)-100].Id, items[len(items)-1].Id)
+		}
+
+		var prefix = "Entity no. 1"
+		var expectedPrefixMatches = 0
+		for _, object := range items {
+			if strings.HasPrefix(object.String, prefix) {
+				expectedPrefixMatches++
+			}
+		}
+		log.Printf("QueryStringPrefix must match %d items", expectedPrefixMatches)
+		perf.QueryStringPrefix(prefix, expectedPrefixMatches)
+
 		perf.RemoveAll()
 
 		// insert again and delete by id
@@ -107,6 +124,8 @@ func (perf *Executor) Run(options Options) {
 		"UpdateBulk",
 		"RemoveAll",
 		"RemoveBulk",
+		"Query100IdsBetween",
+		"QueryStringPrefix",
 	})
 
 	fmt.Println(fmt.Sprintf("DB size after update, before remove: %d", size))
@@ -180,6 +199,26 @@ func (perf *Executor) ChangeValues(items []*models.Entity) {
 func (perf *Executor) UpdateBulk(items []*models.Entity) {
 	defer perf.trackTime(time.Now())
 	assert(perf.exec.PutBulk(items))
+}
+
+func (perf *Executor) Query100IdsBetween(min, max uint64) {
+	defer perf.trackTime(time.Now())
+	if items, err := perf.exec.QueryIdBetween(min, max); err != nil {
+		panic(err)
+	} else if uint64(len(items)) != max-min+1 {
+		panic(fmt.Errorf("invalid number of objects returned by QueryIdBetween(%d, %d): %d", min, max,
+			len(items)))
+	}
+}
+
+func (perf *Executor) QueryStringPrefix(prefix string, expectedCount int) {
+	defer perf.trackTime(time.Now())
+	if items, err := perf.exec.QueryStringPrefix(prefix); err != nil {
+		panic(err)
+	} else if len(items) != expectedCount {
+		panic(fmt.Errorf("invalid number of objects returned by QueryStringPrefix - %d instead of %d",
+			len(items), expectedCount))
+	}
 }
 
 func (perf *Executor) trackTime(start time.Time) {

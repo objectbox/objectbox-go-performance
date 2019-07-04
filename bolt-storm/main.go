@@ -18,6 +18,7 @@ package main
 
 import (
 	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
 	"github.com/objectbox/go-benchmarks/internal/cmd"
 	"github.com/objectbox/go-benchmarks/internal/models"
 	"github.com/objectbox/go-benchmarks/internal/perf"
@@ -179,4 +180,16 @@ func (exec *StormPerf) ReadAll() ([]*models.Entity, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+func (exec *StormPerf) QueryIdBetween(min, max uint64) ([]*models.Entity, error) {
+	var items []*models.Entity
+	var err = exec.db.Select(q.Gte("Id", min), q.Lte("Id", max)).Find(&items)
+	return items, err
+}
+
+func (exec *StormPerf) QueryStringPrefix(prefix string) ([]*models.Entity, error) {
+	var items []*models.Entity
+	var err = exec.db.Prefix("String", prefix, &items)
+	return items, err
 }
