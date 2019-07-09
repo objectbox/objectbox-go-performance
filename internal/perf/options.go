@@ -21,6 +21,7 @@ type Options struct {
 	Count    int
 	Runs     int
 	ManualGc bool
+	Profile  bool
 }
 
 var OptionsDefaults = Options{
@@ -29,4 +30,5 @@ var OptionsDefaults = Options{
 	1000,
 	10,
 	true,
+	false,
 }

@@ -19,6 +19,7 @@ package perf
 import (
 	"fmt"
 	"github.com/objectbox/go-benchmarks/internal/models"
+	"github.com/pkg/profile"
 	"log"
 	"path/filepath"
 	"runtime"
@@ -65,6 +66,10 @@ func removeIds(items []*models.Entity) {
 }
 
 func (perf *Executor) Run(options Options) {
+	if options.Profile {
+		defer profile.Start().Stop()
+	}
+
 	log.Printf("running the test %d times with %d objects", options.Runs, options.Count)
 
 	if options.ManualGc {
