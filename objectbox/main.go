@@ -18,10 +18,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/objectbox/go-benchmarks/internal/cmd"
-	"github.com/objectbox/go-benchmarks/internal/models"
-	"github.com/objectbox/go-benchmarks/internal/perf"
-	"github.com/objectbox/go-benchmarks/objectbox/obx"
+	"github.com/objectbox/objectbox-go-benchmarks/internal/cmd"
+	"github.com/objectbox/objectbox-go-benchmarks/internal/models"
+	"github.com/objectbox/objectbox-go-benchmarks/internal/perf"
+	"github.com/objectbox/objectbox-go-benchmarks/objectbox/obx"
 	"github.com/objectbox/objectbox-go/objectbox"
 	"os"
 	"path/filepath"

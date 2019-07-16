@@ -32,6 +32,6 @@ go run github.com/objectbox/objectbox-go/cmd/objectbox-gogen -source internal/mo
 mv internal/models/entity.obx.go objectbox/obx/
 mv internal/models/objectbox-model.* objectbox/obx/
 for f in objectbox/obx/*.go; do sed -i 's/package models/package obx/g' "$f"; done
-for f in objectbox/obx/*.obx.go; do sed -i '7 a 	. "github.com/objectbox/go-benchmarks/internal/models"' "$f"; done
+for f in objectbox/obx/*.obx.go; do sed -i '7 a 	. "github.com/objectbox/objectbox-go-benchmarks/internal/models"' "$f"; done
 ```
-and add a missing import `. "github.com/objectbox/go-benchmarks/internal/models"` to `entity.obx.go`
+and add a missing import `. "github.com/objectbox/objectbox-go-benchmarks/internal/models"` to `entity.obx.go`

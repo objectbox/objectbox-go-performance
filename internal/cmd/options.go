@@ -18,7 +18,7 @@ package cmd
 
 import (
 	"flag"
-	"github.com/objectbox/go-benchmarks/internal/perf"
+	"github.com/objectbox/objectbox-go-benchmarks/internal/perf"
 )
 
 func GetOptions() perf.Options {

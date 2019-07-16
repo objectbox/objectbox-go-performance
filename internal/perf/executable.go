@@ -16,7 +16,7 @@
 
 package perf
 
-import "github.com/objectbox/go-benchmarks/internal/models"
+import "github.com/objectbox/objectbox-go-benchmarks/internal/models"
 
 type Executable interface {
 	Init() error

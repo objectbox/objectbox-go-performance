@@ -1,4 +1,4 @@
-module github.com/objectbox/go-benchmarks
+module github.com/objectbox/objectbox-go-benchmarks
 
 go 1.12
 

@@ -5,7 +5,7 @@ package obx
 
 import (
 	"github.com/google/flatbuffers/go"
-	. "github.com/objectbox/go-benchmarks/internal/models"
+	. "github.com/objectbox/objectbox-go-benchmarks/internal/models"
 	"github.com/objectbox/objectbox-go/objectbox"
 	"github.com/objectbox/objectbox-go/objectbox/fbutils"
 )
