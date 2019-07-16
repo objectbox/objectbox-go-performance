@@ -28,6 +28,7 @@ Contributing
 ------------
 To regenerate ObjectBox entity bindings
 ```shell script
+mv objectbox/obx/objectbox-model.* internal/models/
 go run github.com/objectbox/objectbox-go/cmd/objectbox-gogen -source internal/models/entity.go
 mv internal/models/entity.obx.go objectbox/obx/
 mv internal/models/objectbox-model.* objectbox/obx/
