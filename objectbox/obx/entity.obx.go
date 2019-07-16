@@ -19,7 +19,7 @@ var EntityBinding = entity_EntityInfo{
 	Entity: objectbox.Entity{
 		Id: 1,
 	},
-	Uid: 4175473993322934045,
+	Uid: 5847816654868029727,
 }
 
 // Entity_ contains type-based Property helpers to facilitate some common operations such as Queries.
@@ -69,14 +69,14 @@ func (entity_EntityInfo) GeneratorVersion() int {
 
 // AddToModel is called by ObjectBox during model build
 func (entity_EntityInfo) AddToModel(model *objectbox.Model) {
-	model.Entity("Entity", 1, 4175473993322934045)
-	model.Property("Id", 6, 1, 8095026970754116821)
+	model.Entity("Entity", 1, 5847816654868029727)
+	model.Property("Id", 6, 1, 6883808554832760191)
 	model.PropertyFlags(8193)
-	model.Property("Int32", 5, 2, 2862911194447920904)
-	model.Property("Int64", 6, 3, 3057392904231195228)
-	model.Property("String", 9, 4, 5438520838581246393)
-	model.Property("Float64", 8, 5, 4760226983744839400)
-	model.EntityLastPropertyId(5, 4760226983744839400)
+	model.Property("Int32", 5, 2, 5235479718995551234)
+	model.Property("Int64", 6, 3, 610993008881667918)
+	model.Property("String", 9, 4, 3065940618737056934)
+	model.Property("Float64", 8, 5, 1697483777723125251)
+	model.EntityLastPropertyId(5, 1697483777723125251)
 }
 
 // GetId is called by ObjectBox during Put operations to check for existing ID on an object
@@ -225,7 +225,7 @@ func (box *EntityBox) GetAll() ([]*Entity, error) {
 
 // Remove deletes a single object
 func (box *EntityBox) Remove(object *Entity) error {
-	return box.Box.Remove(object.Id)
+	return box.Box.Remove(object)
 }
 
 // RemoveMany deletes multiple objects at once.
@@ -238,7 +238,7 @@ func (box *EntityBox) RemoveMany(objects ...*Entity) (uint64, error) {
 	for k, object := range objects {
 		ids[k] = object.Id
 	}
-	return box.Box.RemoveMany(ids...)
+	return box.Box.RemoveIds(ids...)
 }
 
 // Creates a query with the given conditions. Use the fields of the Entity_ struct to create conditions.
