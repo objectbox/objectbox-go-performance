@@ -19,9 +19,9 @@ package main
 import (
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/cmd"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/models"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/perf"
+	"github.com/objectbox/objectbox-go-performance/internal/cmd"
+	"github.com/objectbox/objectbox-go-performance/internal/models"
+	"github.com/objectbox/objectbox-go-performance/internal/perf"
 	"os"
 	"path/filepath"
 )

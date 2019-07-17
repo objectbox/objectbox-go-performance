@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/cmd"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/models"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/perf"
+	"github.com/objectbox/objectbox-go-performance/internal/cmd"
+	"github.com/objectbox/objectbox-go-performance/internal/models"
+	"github.com/objectbox/objectbox-go-performance/internal/perf"
 	"os"
 	"path/filepath"
 )

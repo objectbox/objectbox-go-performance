@@ -18,7 +18,7 @@ package perf
 
 import (
 	"fmt"
-	"github.com/objectbox/objectbox-go-benchmarks/internal/models"
+	"github.com/objectbox/objectbox-go-performance/internal/models"
 	"github.com/pkg/profile"
 	"log"
 	"path/filepath"
