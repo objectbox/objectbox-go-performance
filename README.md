@@ -1,6 +1,25 @@
 Performance tests
 =================
 
+This is an open source benchmark to test the performance of ObjectBox and other databases that offer persistence of Go structs (e.g. GORM, Storm/bbolt).
+
+Tests include:
+
+* CRUD (create, read, update, delete) operations using batches of structs
+* Lookup by IDs
+* Query by prefix
+
+How to run
+----------
+
+For each database to test there's a command line executable represented by a main.go file in those directories:
+
+* objectbox
+* gorm
+* bolt-storm
+
+The following examples refer to the objectbox directory, but you can do the same for others.  
+
 To get good numbers, close all programs before running, build & run outside of IDE:
 
 ```shell script
@@ -13,11 +32,18 @@ or you can use `go run ./objectbox` which does yield about the same results
 
 Parameters
 ----------
+
+A typical invocation looks like this (e.g. 3 runs with 100K objects each run):
+
+```
+./objectbox -count 100000 -runs 3
+```
+
 You can specify some parameters, see `./objectbox -h`:
 ```
 Usage of ./objectbox:
   -count int
-    	number of objects (default 1000)
+    	number of objects (default 10000)
   -db string
     	database directory (default "testdata")
   -runs int

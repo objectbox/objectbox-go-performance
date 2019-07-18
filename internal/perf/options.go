@@ -27,8 +27,8 @@ type Options struct {
 var OptionsDefaults = Options{
 	// not using field names here so that we don't forget to add default when the Options struct is updated
 	"testdata",
-	1000,
+	10000,
 	10,
-	true,
+	false,
 	false,
 }

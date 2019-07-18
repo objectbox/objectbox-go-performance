@@ -29,6 +29,7 @@ func GetOptions() perf.Options {
 	flag.IntVar(&o.Count, "count", o.Count, "number of objects")
 	flag.IntVar(&o.Runs, "runs", o.Runs, "number of times the tests should be executed")
 	flag.BoolVar(&o.Profile, "profile", o.Profile, "enable profiling")
+	flag.BoolVar(&o.ManualGc, "disable-gc", o.ManualGc, "disable garbage collection")
 	flag.Parse()
 
 	return o
