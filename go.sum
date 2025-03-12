@@ -90,8 +90,16 @@ github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/objectbox/objectbox-generator v0.13.0 h1:WyI97psLk3FLw/qGsVIMl49HCSyuFwVekBdIbQDrxXE=
 github.com/objectbox/objectbox-generator v0.13.0/go.mod h1:kanX8YAsG9Fi9tufV0iLMAKfV+d4WLAvSj5rtL01WhQ=
+github.com/objectbox/objectbox-generator v0.14.0 h1:+fr7vOFsdz7d/HWZN3ZLjLnGJ8TviliRyeBHlkL/J40=
+github.com/objectbox/objectbox-generator v0.14.0/go.mod h1:yMFFd/okhMBw02p6ZJJAmfblqyoQHjfYJie95DQbGn0=
+github.com/objectbox/objectbox-generator/v4 v4.0.0 h1:7V7t7mkGfZ0fSNhaOuOQWKNfPnq8Q7mC+Uzo9ciq5To=
+github.com/objectbox/objectbox-generator/v4 v4.0.0/go.mod h1:paUROSAShse/S8vIhpCyg6leDlZR/C7zOusTeK5YOEY=
 github.com/objectbox/objectbox-go v1.7.0 h1:oILjNkSxb52lQ2Ucn85wWk5GvAB5bhnLvZDYlZELAl8=
 github.com/objectbox/objectbox-go v1.7.0/go.mod h1:310SfpcNMThWSrpdcClXWiayVMu59xxA3RZdk5x8ay0=
+github.com/objectbox/objectbox-go v1.8.1 h1:Dl9cXJe4sZKz2XaOFUHTftgicatiBpUex+KLbDTS1rU=
+github.com/objectbox/objectbox-go v1.8.1/go.mod h1:FvnhelfA+S8zdGo916Z/WpPhM8AoMGP8vbXnIAj1jGo=
+github.com/objectbox/objectbox-go v1.9.0 h1:ubyUlgx+9Y1hkf+q0cmBN01VZFhpqOEwWE5xgrIvCpM=
+github.com/objectbox/objectbox-go v1.9.0/go.mod h1:hvJc0nI2o3x2uTrWZYlrZ/t8xsQIhNUrEiou732FmJg=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.7.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/gomega v1.4.3/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1CpauHY=

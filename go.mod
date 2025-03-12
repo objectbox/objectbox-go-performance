@@ -11,7 +11,7 @@ require (
 	github.com/google/flatbuffers v23.5.26+incompatible
 	github.com/jinzhu/gorm v1.9.10
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/objectbox/objectbox-go v1.7.0
+	github.com/objectbox/objectbox-go v1.9.0
 	github.com/pkg/profile v1.3.0
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
